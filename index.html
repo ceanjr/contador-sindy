@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <title>Nosso Amor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Quicksand:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(
+          135deg,
+          #fdf6f6 0%,
+          #f9e8e8 25%,
+          #f5e6e8 50%,
+          #e8e4f0 75%,
+          #e6eaf5 100%
+        );
+        font-family: 'Quicksand', sans-serif;
+        color: #5c5470;
+        padding: 1.5rem;
+        padding-top: calc(1.5rem + env(safe-area-inset-top));
+        padding-bottom: calc(70px + env(safe-area-inset-bottom));
+        overflow-x: hidden;
+      }
+
+      .container {
+        text-align: center;
+        width: 100%;
+        max-width: 500px;
+        animation: fadeIn 1.5s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .heart {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+        animation: pulse 2s ease-in-out infinite;
+        display: inline-block;
+      }
+
+      @media (min-width: 500px) {
+        .heart {
+          font-size: 3rem;
+          margin-bottom: 1rem;
+        }
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+      }
+
+      .title {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 2rem;
+        font-weight: 400;
+        color: #b8879e;
+        margin-bottom: 0.25rem;
+        letter-spacing: 2px;
+      }
+
+      .subtitle {
+        font-size: 0.85rem;
+        font-weight: 300;
+        color: #8b7b8e;
+        margin-bottom: 1.5rem;
+        letter-spacing: 1px;
+      }
+
+      @media (min-width: 500px) {
+        .title {
+          font-size: 2.5rem;
+          margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+          font-size: 1rem;
+        }
+      }
+
+      /* Horizontal Scroll Pills */
+      .pills-container {
+        position: relative;
+        width: 100%;
+        margin-bottom: 1.5rem;
+      }
+
+      .pills-scroll {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        gap: 10px;
+        padding: 8px 16px;
+        justify-content: flex-start;
+      }
+
+      .pills-scroll::-webkit-scrollbar {
+        display: none;
+      }
+
+      /* Fade edges para indicar scroll - elementos HTML controlados por JS */
+      .fade-right {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 24px;
+        pointer-events: none;
+        z-index: 2;
+        display: none;
+      }
+
+      .fade-right {
+        right: 0;
+        background: linear-gradient(
+          to left,
+          rgba(232, 228, 240, 0.95) 0%,
+          transparent 100%
+        );
+      }
+      .fade-right.visible {
+        display: block;
+      }
+
+      .pill-btn {
+        flex: 0 0 auto;
+        scroll-snap-align: start;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px 20px;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.4) 0%,
+          rgba(255, 255, 255, 0.2) 100%
+        );
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: 50px;
+        font-family: 'Quicksand', sans-serif;
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: #8b7b8e;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 2px 8px rgba(184, 135, 158, 0.08);
+        white-space: nowrap;
+      }
+
+      .pill-btn:hover {
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.6) 0%,
+          rgba(255, 255, 255, 0.35) 100%
+        );
+        transform: translateY(-2px);
+        box-shadow: 0 4px 16px rgba(184, 135, 158, 0.15);
+      }
+
+      .pill-btn:active {
+        transform: translateY(0);
+      }
+
+      .pill-btn.active {
+        background: linear-gradient(
+          135deg,
+          rgba(184, 135, 158, 0.25) 0%,
+          rgba(184, 135, 158, 0.15) 100%
+        );
+        border-color: rgba(184, 135, 158, 0.4);
+        color: #b8879e;
+        font-weight: 600;
+        box-shadow:
+          0 4px 16px rgba(184, 135, 158, 0.2),
+          inset 0 1px 1px rgba(255, 255, 255, 0.5);
+      }
+
+      .pill-btn svg {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+        transition: transform 0.3s ease;
+      }
+
+      .pill-btn.active svg {
+        transform: scale(1.1);
+      }
+
+      @media (min-width: 500px) {
+        .pills-scroll {
+          justify-content: center;
+          gap: 12px;
+        }
+
+        .pill-btn {
+          padding: 14px 24px;
+          font-size: 0.9rem;
+        }
+
+        .pills-container::before,
+        .pills-container::after {
+          display: none;
+        }
+      }
+
+      .counter-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.75rem;
+        margin-bottom: 2rem;
+        width: 100%;
+      }
+
+      .counter-grid.has-years {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .counter-item {
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.4) 0%,
+          rgba(255, 255, 255, 0.2) 100%
+        );
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-radius: 20px;
+        padding: 1.25rem 0.75rem;
+        box-shadow:
+          0 8px 32px rgba(184, 135, 158, 0.12),
+          inset 0 1px 1px rgba(255, 255, 255, 0.6),
+          inset 0 -1px 1px rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+
+      @media (min-width: 500px) {
+        .counter-grid {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 1rem;
+        }
+
+        .counter-grid.has-years {
+          grid-template-columns: none;
+        }
+
+        .counter-item {
+          flex: 0 0 auto;
+          min-width: 110px;
+          padding: 1.5rem 1.25rem;
+        }
+      }
+
+      .counter-item:hover {
+        transform: translateY(-3px);
+        box-shadow:
+          0 12px 40px rgba(184, 135, 158, 0.18),
+          inset 0 1px 1px rgba(255, 255, 255, 0.7),
+          inset 0 -1px 1px rgba(255, 255, 255, 0.3);
+      }
+
+      .counter-number {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 2.2rem;
+        font-weight: 500;
+        color: #c4a4b4;
+        line-height: 1;
+        margin-bottom: 0.25rem;
+      }
+
+      .counter-label {
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        color: #9b8a9e;
+        font-weight: 400;
+      }
+
+      @media (min-width: 500px) {
+        .counter-number {
+          font-size: 2.8rem;
+          margin-bottom: 0.3rem;
+        }
+
+        .counter-label {
+          font-size: 0.75rem;
+          letter-spacing: 2px;
+        }
+      }
+
+      .message {
+        font-family: 'Cormorant Garamond', serif;
+        font-style: italic;
+        font-size: 1.4rem;
+        color: #8b7b8e;
+        line-height: 1.5;
+        padding: 0 0.5rem;
+      }
+
+      .message strong {
+        color: #b8879e;
+        font-weight: 500;
+      }
+
+      @media (min-width: 500px) {
+        .message {
+          font-size: 1.3rem;
+          line-height: 1.6;
+          max-width: 400px;
+        }
+      }
+
+      .date {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        font-size: 0.75rem;
+        color: #a99bab;
+        letter-spacing: 0.5px;
+        padding: 0.875rem 1rem;
+        padding-bottom: calc(0.875rem + env(safe-area-inset-bottom));
+        text-align: center;
+        background: linear-gradient(
+          to top,
+          rgba(253, 246, 246, 0.95) 0%,
+          rgba(253, 246, 246, 0) 100%
+        );
+      }
+
+      @media (min-width: 500px) {
+        .date {
+          font-size: 0.85rem;
+          letter-spacing: 1px;
+        }
+      }
+
+      .floating-hearts {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: -1;
+      }
+
+      .floating-heart {
+        position: absolute;
+        opacity: 0.15;
+        animation: float 15s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(100vh) rotate(0deg);
+        }
+        50% {
+          transform: translateY(-100vh) rotate(180deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="floating-hearts" id="floatingHearts"></div>
+
+    <div class="container">
+      <div class="heart">&#10084;</div>
+      <h1 class="title">Eu & Sindy</h1>
+      <p class="subtitle">nosso rolê em números</p>
+
+      <div class="pills-container" id="pillsContainer">
+        <div class="fade-left" id="fadeLeft"></div>
+        <div class="fade-right" id="fadeRight"></div>
+        <div class="pills-scroll" id="pillsScroll">
+          <button
+            class="pill-btn active"
+            data-date="2025-03-20"
+            data-label="desde 20 de março de 2025"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+              ></path>
+            </svg>
+            Namoro
+          </button>
+          <button
+            class="pill-btn"
+            data-date="2025-02-23"
+            data-label="desde 23 de fevereiro de 2025"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+            Novo Começo
+          </button>
+          <button
+            class="pill-btn"
+            data-date="2022-01-06"
+            data-label="desde 6 de janeiro de 2022"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polygon
+                points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"
+              ></polygon>
+            </svg>
+            Pit-stop
+          </button>
+          <button
+            class="pill-btn"
+            data-date="2021-08-04"
+            data-label="desde 4 de agosto de 2021"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <polygon points="10 8 16 12 10 16 10 8"></polygon>
+            </svg>
+            Primeiro Contato
+          </button>
+        </div>
+      </div>
+
+      <div class="counter-grid">
+        <div class="counter-item" id="yearsContainer" style="display: none">
+          <div class="counter-number" id="years">0</div>
+          <div class="counter-label">anos</div>
+        </div>
+        <div class="counter-item">
+          <div class="counter-number" id="months">0</div>
+          <div class="counter-label">meses</div>
+        </div>
+        <div class="counter-item">
+          <div class="counter-number" id="days">0</div>
+          <div class="counter-label">dias</div>
+        </div>
+        <div class="counter-item">
+          <div class="counter-number" id="hours">0</div>
+          <div class="counter-label">horas</div>
+        </div>
+      </div>
+
+      <p class="message">
+        <strong><span id="totalDays">0</span> dias</strong> te aturando e
+        contando...
+      </p>
+    </div>
+
+    <footer class="date" id="dateLabel">desde 20 de março de 2025</footer>
+
+    <script>
+      let startDate = new Date('2025-03-20T00:00:00');
+      const namoroDate = new Date('2025-03-20T00:00:00');
+
+      function updateCounter() {
+        const now = new Date();
+        const diff = now - startDate;
+
+        // Cálculo de anos, meses e dias
+        let years = now.getFullYear() - startDate.getFullYear();
+        let months = now.getMonth() - startDate.getMonth();
+        let days = now.getDate() - startDate.getDate();
+        let hours = now.getHours() - startDate.getHours();
+
+        // Ajustes para valores negativos
+        if (hours < 0) {
+          hours += 24;
+          days--;
+        }
+
+        if (days < 0) {
+          months--;
+          const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+          days += prevMonth.getDate();
+        }
+
+        if (months < 0) {
+          years--;
+          months += 12;
+        }
+
+        // Atualiza os elementos
+        const yearsContainer = document.getElementById('yearsContainer');
+        const counterGrid = document.querySelector('.counter-grid');
+        if (years > 0) {
+          yearsContainer.style.display = '';
+          counterGrid.classList.add('has-years');
+          document.getElementById('years').textContent = years;
+        } else {
+          yearsContainer.style.display = 'none';
+          counterGrid.classList.remove('has-years');
+        }
+        document.getElementById('months').textContent = months;
+        document.getElementById('days').textContent = days;
+        document.getElementById('hours').textContent = hours;
+
+        // Atualiza dias totais de namoro
+        const namoroDiff = now - namoroDate;
+        const totalDays = Math.floor(namoroDiff / (1000 * 60 * 60 * 24));
+        document.getElementById('totalDays').textContent = totalDays;
+      }
+
+      // Configura os botões de data (pills)
+      const pillButtons = document.querySelectorAll('.pill-btn');
+      const dateLabel = document.getElementById('dateLabel');
+      const pillsScroll = document.getElementById('pillsScroll');
+      const fadeLeft = document.getElementById('fadeLeft');
+      const fadeRight = document.getElementById('fadeRight');
+
+      // Função para atualizar indicadores de scroll
+      function updateScrollIndicators() {
+        const scrollLeft = pillsScroll.scrollLeft;
+        const scrollWidth = pillsScroll.scrollWidth;
+        const clientWidth = pillsScroll.clientWidth;
+
+        // Verifica se há conteúdo para rolar
+        const canScroll = scrollWidth > clientWidth + 1;
+
+        if (canScroll && scrollLeft > 5) {
+          fadeLeft.classList.add('visible');
+        } else {
+          fadeLeft.classList.remove('visible');
+        }
+
+        if (canScroll && scrollLeft < scrollWidth - clientWidth - 5) {
+          fadeRight.classList.add('visible');
+        } else {
+          fadeRight.classList.remove('visible');
+        }
+      }
+
+      // Inicializa indicadores e adiciona listener de scroll
+      pillsScroll.addEventListener('scroll', updateScrollIndicators);
+      window.addEventListener('resize', updateScrollIndicators);
+      setTimeout(updateScrollIndicators, 100);
+
+      pillButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          // Remove active de todos
+          pillButtons.forEach((b) => b.classList.remove('active'));
+          // Adiciona active no clicado
+          btn.classList.add('active');
+
+          // Atualiza a data
+          const newDate = btn.dataset.date;
+          startDate = new Date(newDate + 'T00:00:00');
+
+          // Atualiza o label
+          dateLabel.textContent = btn.dataset.label;
+
+          // Scroll suave para centralizar o pill ativo
+          btn.scrollIntoView({
+            behavior: 'smooth',
+            inline: 'center',
+            block: 'nearest',
+          });
+
+          // Atualiza o contador imediatamente
+          updateCounter();
+        });
+      });
+
+      // Cria corações flutuantes
+      function createFloatingHearts() {
+        const container = document.getElementById('floatingHearts');
+        const hearts = ['&#10084;', '&#10085;', '&#10083;'];
+
+        for (let i = 0; i < 6; i++) {
+          const heart = document.createElement('div');
+          heart.className = 'floating-heart';
+          heart.innerHTML = hearts[i % hearts.length];
+          heart.style.left = Math.random() * 100 + '%';
+          heart.style.fontSize = Math.random() * 30 + 20 + 'px';
+          heart.style.animationDelay = Math.random() * 15 + 's';
+          heart.style.animationDuration = Math.random() * 10 + 15 + 's';
+          heart.style.color = `hsl(${340 + Math.random() * 30}, 60%, 75%)`;
+          container.appendChild(heart);
+        }
+      }
+
+      // Inicializa
+      createFloatingHearts();
+      updateCounter();
+      setInterval(updateCounter, 1000);
+    </script>
+  </body>
+</html>
