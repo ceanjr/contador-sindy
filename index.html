@@ -225,19 +225,84 @@
       }
 
       @media (min-width: 500px) {
-        .pills-scroll {
+        .pills-container {
+          display: flex;
           justify-content: center;
-          gap: 12px;
+          margin-bottom: 1.5rem;
+        }
+
+        .pills-scroll {
+          display: inline-flex;
+          justify-content: center;
+          gap: 0;
+          padding: 8px;
+          overflow-x: visible;
+          scroll-snap-type: none;
+          background: linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.35) 0%,
+            rgba(255, 255, 255, 0.15) 100%
+          );
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          border: 1px solid rgba(255, 255, 255, 0.4);
+          border-radius: 56px;
+          box-shadow: 0 4px 20px rgba(184, 135, 158, 0.1);
         }
 
         .pill-btn {
-          padding: 14px 24px;
-          font-size: 0.9rem;
+          padding: 12px 20px;
+          font-size: 0.85rem;
+          background: transparent;
+          backdrop-filter: none;
+          -webkit-backdrop-filter: none;
+          border: none;
+          border-radius: 50px;
+          color: #8b7b8e;
+          box-shadow: none;
+          transition: all 0.25s ease;
+        }
+
+        .pill-btn:hover {
+          background: linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.5) 0%,
+            rgba(255, 255, 255, 0.3) 100%
+          );
+          transform: none;
+          box-shadow: none;
+          color: #8b7b8e;
+        }
+
+        .pill-btn:active {
+          transform: none;
+        }
+
+        .pill-btn.active {
+          background: linear-gradient(
+            135deg,
+            rgba(184, 135, 158, 0.25) 0%,
+            rgba(184, 135, 158, 0.15) 100%
+          );
+          border: none;
+          color: #b8879e;
+          font-weight: 600;
+          box-shadow: 0 2px 12px rgba(184, 135, 158, 0.2);
+        }
+
+        .pill-btn svg {
+          width: 16px;
+          height: 16px;
         }
 
         .pills-container::before,
         .pills-container::after {
           display: none;
+        }
+
+        .fade-left,
+        .fade-right {
+          display: none !important;
         }
       }
 
@@ -348,6 +413,8 @@
           font-size: 1.3rem;
           line-height: 1.6;
           max-width: 400px;
+          margin: 0 auto;
+          text-align: center;
         }
       }
 
